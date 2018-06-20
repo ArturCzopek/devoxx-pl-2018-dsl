@@ -2,17 +2,9 @@ package pl.simplecoding.devoxx.dsl
 
 fun tournament(block: TournamentBuilder.() -> Unit): Tournament = TournamentBuilder().apply(block).build()
 
-fun wizard(name: String, block: HeroBuilder.() -> Unit) = HeroBuilder()
-        .apply {
-            this.name = name
-            this.profession = Profession.WIZARD
-        }.apply(block).build()
+fun wizard(name: String, block: HeroBuilder.() -> Unit) = HeroBuilder(name, Profession.WIZARD).apply(block).build()
 
-fun knight(name: String, block: HeroBuilder.() -> Unit) = HeroBuilder()
-        .apply {
-            this.name = name
-            this.profession = Profession.KNIGHT
-        }.apply(block).build()
+fun knight(name: String, block: HeroBuilder.() -> Unit) = HeroBuilder(name, Profession.KNIGHT).apply(block).build()
 
 class TournamentBuilder {
     var name: String = ""
@@ -30,9 +22,7 @@ class Battles: ArrayList<Battle>() {
     infix fun Hero.versus(opponent: Hero) = add(Battle(this, opponent))
 }
 
-class HeroBuilder {
-    var name = ""
-    var profession = Profession.WIZARD
+class HeroBuilder(val name: String, val profession: Profession) {
     var level = 0
     var equipment = mutableListOf<Item>()
     var spells = mutableListOf<Spell>()
